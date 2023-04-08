@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+      <h1>Contacts Info</h1>
+    </div>
+  </div>
+</div>
+<hr>
+
+<!-- button for return to all contacts -->
+<div class="container">
+  <div class="row">
+    <button (click)="backToContacts()" class="btn btn-success">
+      <span class="glyphicon glyphicon-circle-arrow-left"></span> All Contacts</button>
+  </div>
+</div>
+
+
+<!-- card for individual detail -->
+<div class="row">
+  <div class="col-xs-12">
+
+    <div class="card" style="width: 45rem;">
+      <div class="card-header">
+        <h3><span class="glyphicon glyphicon-user"></span> {{user.fullName}}</h3>
+      </div>
+
+      <div class="list-group list-group-flush">
+        <b>Contacts:</b>
+        <div *ngFor="let contact of contacts">
+          <div *ngIf="(contacts.length |json) == '{}'"> no contacts</div>
+          <div class="row">
+            <div class="col-xs-4">
+              {{contact.no}}
+            </div>
+            <div class="col-xs-8">
+              {{contact.type}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-group list-group-flush">
+        <b>Emails:</b>
+        <div *ngFor="let tempEmail of emails">
+          <div class="row">
+            <div class="col-xs-5">
+              {{tempEmail.email}}
+            </div>
+            <div class="col-xs-7">
+              {{tempEmail.type}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-group list-group-flush">
+        <b>Addresses:</b>
+        <div *ngFor="let tempAdd of add">
+          <div class="row">
+            <div class="col-xs-4">
+              {{tempAdd.state}}
+            </div>
+            <div class="col-xs-4">
+              {{tempAdd.city}}
+            </div>
+            <div class="col-xs-4">
+              {{tempAdd.zipcode}}
+            </div>
+          </div>
+        </div>
+
+        <div class="bottomright">updated at : {{user.updatedAt}} </div>
+      </div>
+    </div>
+  </div>
+</div>
+

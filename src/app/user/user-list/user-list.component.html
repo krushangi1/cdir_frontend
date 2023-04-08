@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+      <h1>Contacts</h1>
+    </div>
+  </div>
+</div>
+<hr>
+
+<!-- button for add new user -->
+<div class="row">
+  <div class="col-xs-12">
+          <div class="addbtn">
+            <button (click)="onAdd()" class="btn-sm btn-success">Add Contact</button>
+          </div>
+  </div>
+</div>
+
+
+<!-- list of all present directory -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <app-list-item
+      *ngFor="let userEl of users; let i = index"
+      [user]="userEl"
+    ></app-list-item>
+  </div>
+</div>
