@@ -1,6 +1,6 @@
 export class Address{
 
-  address_id:number;
+  addressId:number;
   state:string;
   city:string;
   zipcode:number;

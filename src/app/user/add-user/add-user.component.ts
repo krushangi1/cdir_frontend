@@ -8,6 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Address } from '../service/address.model';
+import { Contact } from '../service/contact.model';
+import { Email } from '../service/email.model';
 import { User } from '../service/user.model';
 import { UserService } from '../service/user.service';
 
@@ -17,12 +20,16 @@ import { UserService } from '../service/user.service';
   styleUrls: ['./add-user.component.css'],
 })
 export class AddUserComponent implements OnInit {
-  updateUser: User;
+  directory: User;
+  updateEmail:Email[];
+  updateContact:Contact[];
+  updateAddress:Address[];
+  createsAt:string;
   contactForm: any;
   id: number;
   editMode :boolean;
   submitted = false;
-  updateUserId:number;
+  directoryId:number;
 user: any;
 
   constructor(
@@ -34,12 +41,26 @@ user: any;
 
   ngOnInit() {
     this.editMode=this.userService.getEditMode();
+    console.log("---after init");
+    console.log(this.editMode);
+
     this.initForm();
-    this.updateUserId=this.userService.getUpdateId();
-    this.userService.getDirectory(this.updateUserId).subscribe((data)=>{
-      this.updateUser=data;
-      console.log(this.updateUser);
-      this.id=this.updateUser.directoryId;})
+    if(!this.editMode){
+      this.contactForm.reset();
+    }
+
+    // if(this.editMode){
+    // this.directoryId=this.userService.getUpdateId();
+    // this.userService.getDirectory(this.directoryId).subscribe((data)=>{
+    //   this.directory=data;
+      // this.initForm();
+    //   console.log(this.directory);
+    //   this.updateAddress=data.addresses;
+    //   this.updateContact=data.contacts;
+    //   this.updateEmail=data.emails;
+
+    //   this.id=this.directory.directoryId;});}
+
   }
 
   initForm() {
@@ -57,20 +78,26 @@ user: any;
 
 
     if(this.editMode){
-      this.updateUserId=this.userService.getUpdateId();
-      this.userService.getDirectory(this.updateUserId).subscribe((data)=>{
-        this.updateUser=data;
-        console.log(this.updateUser);
+      this.directoryId=this.userService.getUpdateId();
+      this.userService.getDirectory(this.directoryId).subscribe((data)=>{
+        this.directory=data;
 
-        this.id=this.updateUser.directoryId;
-        contactName = this.updateUser.fullName;
+        console.log(this.directory);
+
+        this.updateAddress=data.addresses;
+        this.updateContact=data.contacts;
+        this.updateEmail=data.emails;
+        this.id=this.directory.directoryId;
+
 
       // add existing phone details to the form
-      if(this.updateUser['contacts']){
-        for(let contact of this.updateUser.contacts){
+      if(this.directory['contacts']){
+        for(let contact of this.directory.contacts){
           const newContact = new FormGroup({
-            'type': new FormControl(contact.type, Validators.required),
-            'no': new FormControl(contact.no, [
+            'contactId': new FormControl(contact.contactId),
+            'directoryId': new FormControl(this.id),
+            'type': new FormControl('', Validators.required),
+            'no': new FormControl('', [
               Validators.required,
               Validators.minLength(10),
               Validators.pattern('[0-9 ]{10}'),
@@ -81,11 +108,13 @@ user: any;
       }
 
       // add existing email details to the form
-      if (this.updateUser.emails) {
-        for (let email of this.updateUser.emails) {
+      if (this.directory.emails) {
+        for (let email of this.updateEmail) {
           const newEmail = new FormGroup({
-            'type': new FormControl(email.type, Validators.required),
-            'email': new FormControl(email.email, [
+            'emaiId': new FormControl(email.emaiId),
+            'directory': new FormControl(this.id),
+            'type': new FormControl('', Validators.required),
+            'email': new FormControl('', [
               Validators.required,
               Validators.email,
             ])
@@ -95,12 +124,14 @@ user: any;
       }
 
        // add existing address details to the form
-       if (this.updateUser.addresses) {
-        for (let address of this.updateUser.addresses) {
+       if (this.directory.addresses) {
+        for (let address of this.directory.addresses) {
           const newAddress = new FormGroup({
-            'city': new FormControl(address.city, Validators.required),
-            'state': new FormControl(address.state, Validators.required),
-            'zipcode': new FormControl(address.zipcode, [
+            'addressId': new FormControl(address.addressId),
+            'directory': new FormControl(this.id),
+            'city': new FormControl('', Validators.required),
+            'state': new FormControl('', Validators.required),
+            'zipcode': new FormControl('', [
               Validators.required,
               Validators.minLength(5),
               Validators.maxLength(5),
@@ -109,7 +140,9 @@ user: any;
           });
           (<FormArray>this.contactForm.get('addresses')).push(newAddress);
         }
-      }});
+      }
+     }  );
+
     }
 
 
@@ -133,12 +166,16 @@ user: any;
   }
 
   addEmailDetails() {
+    console.log("--------addEmail pressed");
+
     (<FormArray>this.contactForm.get('emails')).push(
       new FormGroup({
         type: new FormControl(null, Validators.required),
         email: new FormControl(null, [Validators.required, Validators.email]),
       })
     );
+    console.log("--------addEmail pressed");
+
   }
 
   addAddressDetails() {
@@ -189,15 +226,28 @@ user: any;
 
   onUpdate(data:any){
     console.log(data);
-    this.userService.updateDirectory(this.id,data).subscribe((data)=>{
+    this.userService.updateDirectory(data,this.id).subscribe((data)=>{
       this.router.navigate(['users']);
-    })
+    });
+    this.editMode=false;
+    this.userService.setEditMode(this.editMode);
+    this.editMode=this.userService.getEditMode();
+    console.log("---after update");
+    console.log(this.editMode);
 
 
+    // this.contactForm.reset();
+    this.contactForm.reset();
     return;
   }
 
   backToContacts() {
+    this.editMode=false;
+    this.userService.setEditMode(this.editMode);
+    this.editMode=this.userService.getEditMode();
+    console.log("--------------on back to contact");
+    console.log(this.editMode);
+    this.contactForm.reset();
     this.router.navigate(['users']);
   }
 

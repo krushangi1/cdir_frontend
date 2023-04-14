@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { User } from '../service/user.model';
 import { UserService } from '../service/user.service';
 import { Subscription } from 'rxjs';
@@ -12,38 +12,45 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
-export class UserListComponent implements OnInit{
+export class UserListComponent implements OnInit,OnDestroy{
 
   users: User[];
-  isSearch=false;
+   isSearch:boolean;
   instance:string;
 
   constructor(private userService:UserService,private route:ActivatedRoute,private router:Router){}
 
+
   ngOnInit(): void {
-    // this.route.queryParams
-    //   .subscribe(params => {
-    //     console.log(params);
-    //     this.isSearch=params['isSearch'];
-    //     console.log(this.isSearch);
-
-    //   });
-
-
     this.isSearch=this.userService.getIsSearch();
-    if(this.isSearch){
-      this.instance=this.userService.getSearchInstance();
-      this.userService.search(this.instance).subscribe(data=>{
-        this.users=data;
-      })
-    }
-    else{
-      this.userService.findAll().subscribe(data=>{
-        this.users=data;
-      });
+    this.userService.findAll().subscribe(data => {
+      this.users = data;
+    });
+    if (this.isSearch) {
+      this.instance = this.userService.getSearchInstance();
 
+      this.userService.search(this.instance).subscribe(data => {
+        this.users = data;
+      });
     }
+
+    // if(this.isSearch){
+    //   this.instance=this.userService.getSearchInstance();
+    //   this.userService.search(this.instance).subscribe(data=>{
+    //     this.users=data;
+    //   })
+    // }
+    // else{
+    //   this.userService.findAll().subscribe(data=>{
+    //     this.users=data;
+    //   });
+    // }
+
   }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+
+  // }
 
   onAdd(){
     this.router.navigate(['add'],{relativeTo:this.route});
@@ -53,5 +60,9 @@ export class UserListComponent implements OnInit{
     this.router.navigate(['/users']);
     window.location.reload();
 
+  }
+  ngOnDestroy(): void {
+    this.isSearch=false;
+    this.userService.setIsSearch(this.isSearch);
   }
 }

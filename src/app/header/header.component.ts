@@ -20,7 +20,7 @@ export class HeaderComponent implements  OnInit{
     this.userService.setIsSearch(this.isSearch);
     this.userService.setSearchInstance(this.searchInstance);
     // window.location.reload();
-    // this.router.navigate(['/users']);//{ queryParams: { isSearch:'true'}}
+    this.router.navigate(['/users']);//{ queryParams: { isSearch:'true'}}
     this.searchInstance='';
 
   }

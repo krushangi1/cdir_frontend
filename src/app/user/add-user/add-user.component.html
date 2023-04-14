@@ -24,6 +24,9 @@
           id="fullName"
           class="form-control"
           placeholder="Full name"
+
+          value="{{ directory ? directory.fullName : 'Enter name' }}"
+
           [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }"
 
         />
@@ -57,7 +60,7 @@
         <div class="row" formArrayName="emails">
           <div
             *ngFor="
-              let contactDetail of this.contactForm.get('emails')['controls'];
+              let contact of updateEmail;
               let i = index
             "
             [formGroupName]="i"
@@ -69,6 +72,7 @@
                 formControlName="email"
                 placeholder="email"
                 required
+                [(ngModel)]="updateEmail[i].email"
                 [ngClass]="{ 'is-invalid': submitted && f.emails.errors }"
               />
               <div *ngIf="submitted && f.emails.invalid" class="invalid-feedback" style="color: red;">
@@ -77,7 +81,7 @@
             </div>
 
             <div class="col-xs-3">
-              <select formControlName="type" class="form-control">
+              <select formControlName="type" class="form-control" [(ngModel)]="updateEmail[i].type">
                 <option value="Work" selected>Work</option>
                 <option value="Personal">Personal</option>
               </select>
@@ -113,7 +117,7 @@
         <div class="row" formArrayName="contacts">
           <div
             *ngFor="
-              let contactDetail of this.contactForm.get('contacts')['controls'];
+              let contact of updateContact;
               let i = index
             "
             [formGroupName]="i"
@@ -126,6 +130,7 @@
               placeholder="contact no"
               pattern="[0-9]{10}"
               required
+              [(ngModel)]="updateContact[i].no"
               [ngClass]="{ 'is-invalid': submitted && f.contacts.errors }"
             />
             <div *ngIf="submitted && f.contacts.invalid" class="invalid-feedback" style="color: red;">
@@ -134,7 +139,7 @@
           </div>
 
           <div class="col-xs-3">
-            <select formControlName="type" class="form-control">
+            <select formControlName="type" class="form-control" [(ngModel)]="updateContact[i].type">
               <option value="Primary" selected>Primary</option>
               <option value="Secondary">Secondary</option>
             </select>
@@ -170,7 +175,7 @@
         <div class="row" formArrayName="addresses">
           <div
             *ngFor="
-              let contactDetail of this.contactForm.get('addresses')['controls'];
+              let address of updateAddress;
               let i = index
             "
             [formGroupName]="i"
@@ -182,6 +187,7 @@
               formControlName="state"
               placeholder="state"
               required
+              [(ngModel)]="updateAddress[i].state"
             />
           </div>
           <div class="col-xs-3">
@@ -191,6 +197,7 @@
               formControlName="city"
               placeholder="city"
               required
+              [(ngModel)]="updateAddress[i].city"
             />
           </div>
           <div class="col-xs-3">
@@ -200,6 +207,7 @@
               formControlName="zipcode"
               placeholder="zipcode"
               required
+              [(ngModel)]="updateAddress[i].zipcode"
             />
           </div>
           <div class="col-xs-2">
@@ -210,7 +218,7 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-info my-4 btn-block" (click)="onSubmit(contactForm.value)" *ngIf="!editMode"> Sign in</button>
+  <button class="btn btn-info my-4 btn-block" (click)="onSubmit(contactForm.value)"  *ngIf="!editMode"> Sign in</button>
   <button class="btn btn-info my-4 btn-block" (click)="onUpdate(contactForm.value)" type="submit" *ngIf="editMode"> Update</button>
 
   <hr />

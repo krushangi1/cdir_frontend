@@ -14,7 +14,7 @@ export class UserService{
   searchInstance:string;
   isSearch:boolean;
   editMode:boolean;
-  updateUserId:number;
+  directoryId:number;
 
   //methods to set and get search instance and bool
   setSearchInstance(data:string){
@@ -36,10 +36,10 @@ export class UserService{
     return this.editMode;
   }
   setUpdateId(id:number){
-    this.updateUserId=id;
+    this.directoryId=id;
   }
   getUpdateId(){
-    return this.updateUserId;
+    return this.directoryId;
   }
 
   private baseUrl='http://localhost:8080/directory/all';
@@ -85,8 +85,8 @@ export class UserService{
   }
 
   //to update directory
-  public updateDirectory(directoryId:number,postData:Object){
-    return this.http.put<User>(`${this.baseUrl}/${directoryId}`,postData);
+  public updateDirectory(postData:Object,directoryId:number){
+    return this.http.put<User>(`${this.baseUrl}/put/${directoryId}`,postData);
   }
 
   //search

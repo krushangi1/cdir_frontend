@@ -13,7 +13,7 @@ import { Contact } from '../service/contact.model';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit{
-  updateUserId:number;
+  directoryId:number;
   user:User;
   emails:Email[];
   add:Address[];
@@ -66,14 +66,10 @@ export class UserDetailComponent implements OnInit{
 
   onUpdate(id:number){
     this.editMode=true;
-    this.updateUserId=id;
+    this.directoryId=id;
     this.userService.setEditMode(this.editMode);
     this.editMode=this.userService.getEditMode();
-
-
-
-
-    this.userService.setUpdateId(this.updateUserId);
+    this.userService.setUpdateId(this.directoryId);
     this.router.navigate(['users/add'])
 
   }
