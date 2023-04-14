@@ -3,7 +3,7 @@
 <a (click)="onEdit()"  routerLinkActive="active">
       <div class="modal-body">
       <h4 > <span class="glyphicon glyphicon-folder-open"></span>  {{user.fullName}} </h4>
-      <p>created at:{{user.createdAt}}</p>
+      <p>created at:{{user.createsAt | date}}</p>
     </div>
   </a>
 

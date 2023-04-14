@@ -1,80 +1,441 @@
-<p>add-user works!</p>
+<!-- button for return to all contacts -->
+<div class="container">
+  <div class="row">
+    <button (click)="backToContacts()" class="btn btn-success">
+      <span class="glyphicon glyphicon-circle-arrow-left"></span> All Contacts</button>
+  </div>
+</div>
+
+<div class="jumbotron">
 <form
-  [formGroup]="userForm"
-  (ngSubmit)="onSubmit()"
-  class="text-center border border-light p-5"
+  *ngIf="contactForm"
+  [formGroup]="contactForm"
 >
   <h2 class="pull-left">New Contact</h2>
 
   <div class="row">
-    <div class="col-xs-12">
-      <div class="form-group">
-        <label for="fullName">Name</label>
+    <div class="col-xs-12 form-group">
+      <div class="form-group" >
+        <hr />
+        <label class="pull-left" for="fullName">Name</label>
         <input
           type="text"
           formControlName="fullName"
           id="fullName"
           class="form-control"
           placeholder="Full name"
+          [ngClass]="{ 'is-invalid': submitted && f.fullName.errors }"
+
         />
+        <div *ngIf="submitted && f.fullName.errors" class="invalid-feedback" style="color: red;">
+          <div *ngIf="f.fullName.errors.required">Name is required</div>
+      </div>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <label for="emails">Emails</label>
-    <div class="col-xs-12" formArrayName="emails">
-      <div class="row" *ngFor="let tempEmail of emails; let i = index" [formGroupName]="i" >
-        <div class="col-xs-8">
-            <input type="text"
-            class="form-control"
-            formControlName="name">
+    <div class="col-xs-12 form-group">
+      <div class="form-group">
+        <hr />
+        <div class="row">
+          <div class="col-xs-10">
+            <label class="text-left" for="fullName">Email</label>
+          </div>
+          <div class="col-xs-2">
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="addEmailDetails()"
+              *ngIf="!editMode"
+              type="button"
+            >
+              Add Email
+            </button>
+          </div>
         </div>
-        <div class="col-xs-2">
-            <input type="text"
-            class="form-control"
-            formControlName="amount">
+
+        <div class="row" formArrayName="emails">
+          <div
+            *ngFor="
+              let contactDetail of this.contactForm.get('emails')['controls'];
+              let i = index
+            "
+            [formGroupName]="i"
+          >
+            <div class="col-xs-7">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="email"
+                placeholder="email"
+                required
+                [ngClass]="{ 'is-invalid': submitted && f.emails.errors }"
+              />
+              <div *ngIf="submitted && f.emails.invalid" class="invalid-feedback" style="color: red;">
+                <div *ngIf="f.emails.invalid">email must be valid </div>
+            </div>
+            </div>
+
+            <div class="col-xs-3">
+              <select formControlName="type" class="form-control">
+                <option value="Work" selected>Work</option>
+                <option value="Personal">Personal</option>
+              </select>
+            </div>
+            <div class="col-xs-2">
+              <button type="button" class="btn btn-danger" (click)="removeEmailDetails(i)">X</button>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-2">
-            <button type="button" class="btn btn-danger" >X</button>
-            <!-- <button type="button" class="btn btn-danger" (click)="onDeleteIngredient(i)">X</button> -->
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-xs-12">
-            <button class="btn btn-success" type="button" >Add Ingredient</button>
-            <!-- <button class="btn btn-success" type="button" (click)="onAddIngredient()">Add Ingredient</button> -->
-        </div>
-    </div>
+      </div>
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-xs-12 form-group">
+      <div class="form-group">
+        <hr />
+        <div class="row">
+          <div class="col-xs-10">
+            <label class="text-left" for="fullName">Contact</label>
+          </div>
+          <div class="col-xs-2">
+            <button
+              class="btn btn-sm btn-primary"
+              *ngIf="!editMode"
+              (click)="addPhoneDetails()"
+              type="button"
+            >
+              Add Contact
+            </button>
+          </div>
+        </div>
+        <div class="row" formArrayName="contacts">
+          <div
+            *ngFor="
+              let contactDetail of this.contactForm.get('contacts')['controls'];
+              let i = index
+            "
+            [formGroupName]="i"
+          >
+          <div class="col-xs-7">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="no"
+              placeholder="contact no"
+              pattern="[0-9]{10}"
+              required
+              [ngClass]="{ 'is-invalid': submitted && f.contacts.errors }"
+            />
+            <div *ngIf="submitted && f.contacts.invalid" class="invalid-feedback" style="color: red;">
+              <div *ngIf="f.contacts.invalid">contact must be valid </div>
+          </div>
+          </div>
 
+          <div class="col-xs-3">
+            <select formControlName="type" class="form-control">
+              <option value="Primary" selected>Primary</option>
+              <option value="Secondary">Secondary</option>
+            </select>
+          </div>
+          <div class="col-xs-2">
+            <button type="button" class="btn btn-danger" (click)="removePhoneDetails(i)">X</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <input
-    type="email"
-    formControlName="email"
-    id="defaultRegisterFormEmail"
-    class="form-control xs-4"
-    placeholder="E-mail"
-  />
-
-  <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+  <div class="row">
+    <div class="col-xs-12 form-group">
+      <div class="form-group">
+        <hr />
+        <div class="row">
+          <div class="col-xs-10">
+            <label class="text-left" for="fullName">Address</label>
+          </div>
+          <div class="col-xs-2">
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="addAddressDetails()"
+              *ngIf="!editMode"
+              type="button"
+            >
+              Add Address
+            </button>
+          </div>
+        </div>
+        <div class="row" formArrayName="addresses">
+          <div
+            *ngFor="
+              let contactDetail of this.contactForm.get('addresses')['controls'];
+              let i = index
+            "
+            [formGroupName]="i"
+           >
+          <div class="col-xs-4">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="state"
+              placeholder="state"
+              required
+            />
+          </div>
+          <div class="col-xs-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="city"
+              placeholder="city"
+              required
+            />
+          </div>
+          <div class="col-xs-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="zipcode"
+              placeholder="zipcode"
+              required
+            />
+          </div>
+          <div class="col-xs-2">
+            <button type="button" class="btn btn-danger" (click)="removeAddressDetails(i)">X</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-info my-4 btn-block" (click)="onSubmit(contactForm.value)" *ngIf="!editMode"> Sign in</button>
+  <button class="btn btn-info my-4 btn-block" (click)="onUpdate(contactForm.value)" type="submit" *ngIf="editMode"> Update</button>
 
   <hr />
 </form>
+</div>
+
+<!-- *********************************************************************8 -->
+<!-- <div class="form">
+  <div class="container">
+    <div class="row mt-3"></div>
+    <div class="row">
+      <form
+        *ngIf="contactForm"
+        [formGroup]="contactForm"
+        (ngSubmit)="onSubmit(contactForm.value)"
+      >
+        <div class="row mb-3">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <p class="h3 fw-bold text-primary">Add Contact</p>
+                &nbsp;
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+        <div
+          class="col-sm-4"
+          style="
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.3);
+            border-radius: 0.5%;">
+
+          <div class="">
+            <div class="mb-2">
+              &nbsp;<hr>
+              <label for="fullName">Name :</label>
+              <input
+                type="text"
+                formControlName="fullName"
+                class="form-control"
+              />
+              <br>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mb-2"
+          style="
+            border-top: 1.5px solid rgba(0, 0, 0, 0.3);
+            border-radius: 0.5%;
+           ">
+           <div class=" mb-2">
+            <div class="col-md-10">
+              <h5>Phone</h5>
+            </div>
+            <div class="col-md-2">
+              <button
+                class="btn btn-sm btn-primary"
+                (click)="addPhoneDetails()"
+                type="button"
+                style="margin-top: 10;">
+                Add Phone
+              </button>
+            </div>
+          </div>
+          <div class="" formArrayName="contacts">
+            <div
+              class="md-2"
+              *ngFor="
+                let contactDetail of this.contactForm.get('contacts')['controls'];let i = index"
+              [formGroupName]="i">
+              <div class="col-md-12 col-lg-4">
+                <div>
+                  <label for="type">Phone Type :</label>
+                  <select formControlName="type" class="form-control">
+                    <option value="Primary" selected>Primary</option>
+                    <option value="Secondary">Secondary</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-7">
+                <div>
+                  <label for="no">Phone Number :</label>
+                  <input
+                    type="text"
+                    formControlName="no"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-1 col-lg-1">
+                  <p
+
+                    class="btn btn-danger mt-4 mb-2"
+                    (click)="removePhoneDetails(i)"
+                    style="margin-top: 20;">
+                    X
+                </p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class=" mb-2"
+          style="
+            border-top: 1.5px solid rgba(0, 0, 0, 0.3);
+            border-radius: 0.5%;">
+           <div class="row">
+            <div class="col-md-10">
+              <h5>Email Details:</h5>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-sm btn-primary" type="button" (click)="addEmailDetails()">
+                Add Email
+              </button>
+            </div>
+          </div>
+          <div class="row" formArrayName="emails">
+            <div
+              class="row"
+              *ngFor="
+              let contactDetail of this.contactForm.get('emails')['controls'];let i = index"
+              [formGroupName]="i">
+              <div class="col-md-12 col-lg-4">
+                <div>
+                  <label for="emailType">Email Type :</label>
+                  <select formControlName="emailType" class="form-control">
+                    <option value="Work" selected>Work</option>
+                    <option value="Home">Home</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-7">
+                <div>
+                  <label for="email">Email Id :</label>
+                  <input
+                    type="text"
+                    formControlName="email"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-1 col-lg-1">
+                <div>
+                  <label for="">&nbsp;</label>
+                  <button type="button" class="btn btn-danger mt-4 mb-2" (click)="removeEmailDetails(i)">
+                    X
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row mb-3 pb-2"
+          style="
+            border-top: 1.5px solid rgba(0, 0, 0, 0.3);
+            border-radius: 0.5%;
+          "
+        >
+          <div class="row">
+            <div class="col-md-10">
+              <h5>Address Details:</h5>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-sm btn-primary" type="button" (click)="addAddressDetails()">
+                Add Address
+              </button>
+            </div>
+          </div>
+          <div class="row" formArrayName="addresses">
+            <div
+              class="row"
+              *ngFor="let contactDetail of this.contactForm.get('addresses')['controls'];let i = index"
+              [formGroupName]="i">
+              <div class="col-md-12 col-lg-2">
+                <div>
+                  <label for="city">City :</label>
+                  <input
+                    type="text"
+                    formControlName="city"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-2">
+                <div>
+                  <label for="state">State :</label>
+                  <input
+                    type="text"
+                    formControlName="state"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-2">
+                <div>
+                  <label for="zipcode">zipcode :</label>
+                  <input
+                    type="text"
+                    formControlName="zipcode"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-1 col-lg-1">
+                <div>
+                  <label for="">&nbsp;</label>
+                  <button type="button" class="btn btn-danger mt-4 mb-2" (click)="removeAddressDetails(i)">
+                    X
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-5 col-lg-12">
+          <button type="submit" class="btn btn-success"  [disabled]="!contactForm.valid">Save Contact</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->

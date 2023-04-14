@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '../service/user.model';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { UserService } from '../service/user.service';
@@ -13,13 +13,15 @@ import { Contact } from '../service/contact.model';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit{
-
+  updateUserId:number;
   user:User;
   emails:Email[];
   add:Address[];
   contacts:Contact[];
+  editMode=false;
 
   id=this.route.snapshot.params["directoryId"];
+  @Output() mode = new EventEmitter();
 
   constructor(private route:ActivatedRoute,private router:Router,private userService:UserService){}
 
@@ -29,9 +31,9 @@ export class UserDetailComponent implements OnInit{
 
 
   ngOnInit(){
-
     this.userService.getDirectory(this.id).subscribe(data=>{
       this.user=data;
+
     });
 
     this.userService.getEmails(this.id).subscribe(data=>{
@@ -40,6 +42,10 @@ export class UserDetailComponent implements OnInit{
 
     this.userService.getAddresses(this.id).subscribe(data=>{
       this.add=data;
+      if(this.add.length<=0){
+
+
+      }
     });
 
     this.userService.getContacts(this.id).subscribe(data=>{
@@ -47,4 +53,28 @@ export class UserDetailComponent implements OnInit{
     })
   }
 
+  onDelete(id:number){
+    if(confirm("Are you sure you want to Delete Contact?")) {
+      this.userService.deleteDirectory(id).subscribe((data)=>{
+        alert("deleted successfully")
+        this.router.navigate(['users']);
+      });
+  } else {
+      return;
+    }
+  }
+
+  onUpdate(id:number){
+    this.editMode=true;
+    this.updateUserId=id;
+    this.userService.setEditMode(this.editMode);
+    this.editMode=this.userService.getEditMode();
+
+
+
+
+    this.userService.setUpdateId(this.updateUserId);
+    this.router.navigate(['users/add'])
+
+  }
 }

@@ -16,11 +16,22 @@
   </div>
 </div>
 
+<!-- button for return to all contacts -->
+<div *ngIf="isSearch">
+<div class="container">
+  <div class="row">
+    <button (click)="backToContacts()" class="btn btn-success">
+      <span class="glyphicon glyphicon-circle-arrow-left"></span> All Contacts</button>
+  </div>
+</div>
+</div>
+
 
 <!-- list of all present directory -->
 
 <div class="row">
   <div class="col-xs-12">
+    <div *ngIf="isSearch">Results:</div>
     <app-list-item
       *ngFor="let userEl of users; let i = index"
       [user]="userEl"

@@ -12,12 +12,11 @@ export class ListItemComponent implements OnInit{
   @Input() user:User;
 
   constructor(private route:ActivatedRoute,private router:Router){}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 
   onEdit(){
-    console.log(this.user.directoryId);
-
     this.router.navigate([this.route,'edit',this.user.directoryId],{relativeTo:this.route})
   }
 

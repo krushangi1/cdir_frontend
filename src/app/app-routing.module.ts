@@ -6,6 +6,8 @@ import { AddUserComponent } from "./user/add-user/add-user.component";
 
 const routes:Routes=[
   {path:'',redirectTo:'/users',pathMatch:'full'},
+  {path:'nav',redirectTo:'/users',pathMatch:'full'},
+  // {path:'user/',redirectTo:'/users',pathMatch:'full'}
   {path: 'users', component: UserComponent},
   {path:'users/edit/:directoryId', component:UserDetailComponent},
   {path:'users/add', component:AddUserComponent}

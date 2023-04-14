@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from './service/user.model';
 import { UserService } from './service/user.service';
 
@@ -10,6 +10,7 @@ import { UserService } from './service/user.service';
 export class UserComponent implements OnInit{
 
   users:User[] | undefined;
+  @Input() editMode:number;
 
   constructor(private userService:UserService){}
 
