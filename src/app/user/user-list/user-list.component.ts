@@ -15,14 +15,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserListComponent implements OnInit,OnDestroy{
 
   users: User[];
-   isSearch:boolean;
+  isSearch:boolean;
   instance:string;
+  editMode:boolean;
+  searchInstance = '';
 
   constructor(private userService:UserService,private route:ActivatedRoute,private router:Router){}
 
 
   ngOnInit(): void {
     this.isSearch=this.userService.getIsSearch();
+    this.userService.setIsSearch(this.isSearch);
+    this.userService.setSearchInstance(this.searchInstance);
     this.userService.findAll().subscribe(data => {
       this.users = data;
     });
@@ -53,6 +57,8 @@ export class UserListComponent implements OnInit,OnDestroy{
   // }
 
   onAdd(){
+    this.editMode=false;
+    this.userService.setEditMode(this.editMode);
     this.router.navigate(['add'],{relativeTo:this.route});
   }
 
@@ -64,5 +70,15 @@ export class UserListComponent implements OnInit,OnDestroy{
   ngOnDestroy(): void {
     this.isSearch=false;
     this.userService.setIsSearch(this.isSearch);
+  }
+  onEnter(){
+    this.isSearch=true;
+
+    this.userService.setIsSearch(this.isSearch);
+    this.userService.setSearchInstance(this.searchInstance);
+    // window.location.reload();
+    this.router.navigate(['/users']);//{ queryParams: { isSearch:'true'}}
+    this.searchInstance='';
+
   }
 }

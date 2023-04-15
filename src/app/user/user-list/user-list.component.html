@@ -1,8 +1,22 @@
 <div class="container">
   <div class="row">
+    <div class="col-xs-8">
     <div class="col-lg-2">
       <h1>Contacts</h1>
+    </div></div>
+    <div class="col-xs-4">
+    <div class="d-flex input-group w-auto search-container">
+      <input
+        type="search"
+        class="form-control rounded"
+        placeholder="Search"
+        aria-label="Search"
+        aria-describedby="search-addon"
+        (keyup.enter)="onEnter()"
+        [(ngModel)]="searchInstance"
+      />
     </div>
+  </div>
   </div>
 </div>
 <hr>

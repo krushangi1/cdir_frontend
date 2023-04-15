@@ -64,7 +64,7 @@ user: any;
   }
 
   initForm() {
-    let contactName = '';
+    let contactName = this.directory?this.directory.fullName:'';
     let phoneDetails = new FormArray([]);
     let emailsDetails = new FormArray([]);
     let addressDetails = new FormArray([]);
