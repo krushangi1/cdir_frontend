@@ -35,11 +35,11 @@ export class UserService{
   getEditMode(){
     return this.editMode;
   }
-  setUpdateId(id:number){
-    this.directoryId=id;
-  }
-  getUpdateId(){
+  getDirectoryId(){
     return this.directoryId;
+  }
+  setDirectoryId(id:number){
+    this.directoryId=id;
   }
 
   private baseUrl='http://localhost:8080/directory/all';

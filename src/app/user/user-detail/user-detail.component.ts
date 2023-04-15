@@ -33,24 +33,20 @@ export class UserDetailComponent implements OnInit{
   ngOnInit(){
     this.userService.getDirectory(this.id).subscribe(data=>{
       this.user=data;
-
+      this.directoryId=data.directoryId;
     });
 
-    this.userService.getEmails(this.id).subscribe(data=>{
-      this.emails=data;
-    });
+    // this.userService.getEmails(this.id).subscribe(data=>{
+    //   this.emails=data;
+    // });
 
-    this.userService.getAddresses(this.id).subscribe(data=>{
-      this.add=data;
-      if(this.add.length<=0){
+    // this.userService.getAddresses(this.id).subscribe(data=>{
+    //   this.add=data;
+    // });
 
-
-      }
-    });
-
-    this.userService.getContacts(this.id).subscribe(data=>{
-      this.contacts=data;
-    })
+    // this.userService.getContacts(this.id).subscribe(data=>{
+    //   this.contacts=data;
+    // })
   }
 
   onDelete(id:number){
@@ -66,10 +62,10 @@ export class UserDetailComponent implements OnInit{
 
   onUpdate(id:number){
     this.editMode=true;
-    this.directoryId=id;
+    this.directoryId=this.id;
     this.userService.setEditMode(this.editMode);
     this.editMode=this.userService.getEditMode();
-    this.userService.setUpdateId(this.directoryId);
+    this.userService.setDirectoryId(this.directoryId);
     this.router.navigate(['users/add'])
 
   }

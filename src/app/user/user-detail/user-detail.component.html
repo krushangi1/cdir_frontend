@@ -27,7 +27,7 @@
 
       <div class="list-group list-group-flush">
         <b>Contacts:</b>
-        <div *ngFor="let contact of contacts">
+        <div *ngFor="let contact of user['contacts']">
           <div class="row">
             <div class="col-xs-4">
               {{contact.no}}
@@ -40,7 +40,7 @@
       </div>
       <div class="list-group list-group-flush">
         <b>Emails:</b>
-        <div *ngFor="let tempEmail of emails">
+        <div *ngFor="let tempEmail of user['emails']">
           <div class="row">
             <div class="col-xs-5">
               {{tempEmail.email}}
@@ -54,7 +54,7 @@
 
       <div class="list-group list-group-flush">
         <b>Addresses:</b>
-        <div *ngFor="let tempAdd of add">
+        <div *ngFor="let tempAdd of user['addresses']">
           <div class="row">
             <div class="col-xs-4">
               {{tempAdd.state}}

@@ -78,11 +78,10 @@ user: any;
 
 
     if(this.editMode){
-      this.directoryId=this.userService.getUpdateId();
+      this.directoryId=this.userService.getDirectoryId();
+
       this.userService.getDirectory(this.directoryId).subscribe((data)=>{
         this.directory=data;
-
-        console.log(this.directory);
 
         this.updateAddress=data.addresses;
         this.updateContact=data.contacts;

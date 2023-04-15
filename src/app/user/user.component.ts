@@ -7,17 +7,9 @@ import { UserService } from './service/user.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit{
+export class UserComponent {
 
   users:User[] | undefined;
   @Input() editMode:number;
 
-  constructor(private userService:UserService){}
-
-  ngOnInit(): void {
-    this.userService.findAll().subscribe(data=>{
-      this.users=data;
-    });
-
-  }
 }

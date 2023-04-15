@@ -41,14 +41,15 @@
 </div>
 
 
-<!-- list of all present directory -->
 
+<!-- list of all present directory -->
 <div class="row">
   <div class="col-xs-12">
-    <div *ngIf="isSearch">Results:</div>
     <app-list-item
       *ngFor="let userEl of users; let i = index"
       [user]="userEl"
     ></app-list-item>
   </div>
 </div>
+
+

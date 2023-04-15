@@ -25,8 +25,7 @@ export class UserListComponent implements OnInit,OnDestroy{
 
   ngOnInit(): void {
     this.isSearch=this.userService.getIsSearch();
-    this.userService.setIsSearch(this.isSearch);
-    this.userService.setSearchInstance(this.searchInstance);
+    this.searchInstance=this.userService.getSearchInstance();
     this.userService.findAll().subscribe(data => {
       this.users = data;
     });
