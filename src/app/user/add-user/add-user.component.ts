@@ -29,7 +29,7 @@ export class AddUserComponent implements OnInit {
   id: number;
   editMode :boolean;
   submitted = false;
-  directoryId:number;
+  directoryid:number;
 user: any;
 
   constructor(
@@ -50,8 +50,8 @@ user: any;
     }
 
     // if(this.editMode){
-    // this.directoryId=this.userService.getUpdateId();
-    // this.userService.getDirectory(this.directoryId).subscribe((data)=>{
+    // this.directoryid=this.userService.getUpdateid();
+    // this.userService.getDirectory(this.directoryid).subscribe((data)=>{
     //   this.directory=data;
       // this.initForm();
     //   console.log(this.directory);
@@ -59,7 +59,7 @@ user: any;
     //   this.updateContact=data.contacts;
     //   this.updateEmail=data.emails;
 
-    //   this.id=this.directory.directoryId;});}
+    //   this.id=this.directory.directoryid;});}
 
   }
 
@@ -68,6 +68,8 @@ user: any;
     let phoneDetails = new FormArray([]);
     let emailsDetails = new FormArray([]);
     let addressDetails = new FormArray([]);
+    console.log("==============");
+
 
     this.contactForm = new FormGroup({
       fullName: new FormControl(contactName, Validators.required),
@@ -78,16 +80,18 @@ user: any;
 
 
     if(this.editMode){
-      this.directoryId=this.userService.getDirectoryId();
-
-      this.userService.getDirectory(this.directoryId).subscribe((data)=>{
+      this.directoryid=this.userService.getDirectoryid();
+      this.userService.getDirectory(this.directoryid).subscribe((data)=>{
+        console.log(data);
         this.directory=data;
-
         this.updateAddress=data.addresses;
         this.updateContact=data.contacts;
         this.updateEmail=data.emails;
-        this.id=this.directory.directoryId;
+        this.id=data.id;
 
+        this.contactForm.patchValue({
+          fullName:data.fullName,
+        })
 
       // add existing phone details to the form
       if(this.directory['contacts']){
@@ -110,7 +114,7 @@ user: any;
       if (this.directory.emails) {
         for (let email of this.updateEmail) {
           const newEmail = new FormGroup({
-            'emaiId': new FormControl(email.emaiId),
+            'emailId': new FormControl(email.emailId),
             'directory': new FormControl(this.id),
             'type': new FormControl('', Validators.required),
             'email': new FormControl('', [
@@ -225,6 +229,8 @@ user: any;
 
   onUpdate(data:any){
     console.log(data);
+    console.log(this.id);
+
     this.userService.updateDirectory(data,this.id).subscribe((data)=>{
       this.router.navigate(['users']);
     });

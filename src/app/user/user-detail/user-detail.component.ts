@@ -13,14 +13,15 @@ import { Contact } from '../service/contact.model';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit{
-  directoryId:number;
+  directoryid:number;
   user:User;
-  emails:Email[];
-  add:Address[];
-  contacts:Contact[];
+  userName:String;
+  // emails:Email[];
+  // add:Address[];
+  // contacts:Contact[];
   editMode=false;
 
-  id=this.route.snapshot.params["directoryId"];
+  id=this.route.snapshot.params["directoryid"];
   @Output() mode = new EventEmitter();
 
   constructor(private route:ActivatedRoute,private router:Router,private userService:UserService){}
@@ -33,7 +34,8 @@ export class UserDetailComponent implements OnInit{
   ngOnInit(){
     this.userService.getDirectory(this.id).subscribe(data=>{
       this.user=data;
-      this.directoryId=data.directoryId;
+      this.directoryid=data.directoryId;
+      this.userName=data.fullName;
     });
 
     // this.userService.getEmails(this.id).subscribe(data=>{
@@ -62,10 +64,10 @@ export class UserDetailComponent implements OnInit{
 
   onUpdate(id:number){
     this.editMode=true;
-    this.directoryId=this.id;
+    this.directoryid=this.id;
     this.userService.setEditMode(this.editMode);
     this.editMode=this.userService.getEditMode();
-    this.userService.setDirectoryId(this.directoryId);
+    this.userService.setDirectoryid(this.directoryid);
     this.router.navigate(['users/add'])
 
   }

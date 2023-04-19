@@ -9,7 +9,7 @@ const routes:Routes=[
   {path:'nav',redirectTo:'/users',pathMatch:'full'},
   // {path:'user/',redirectTo:'/users',pathMatch:'full'}
   {path: 'users', component: UserComponent},
-  {path:'users/edit/:directoryId', component:UserDetailComponent},
+  {path:'users/edit/:directoryid', component:UserDetailComponent},
   {path:'users/add', component:AddUserComponent}
 ]
 

@@ -87,7 +87,7 @@
               </select>
             </div>
             <div class="col-xs-2">
-              <button type="button" class="btn btn-danger" (click)="removeEmailDetails(i)">X</button>
+              <button type="button" class="btn btn-danger" (click)="removeEmailDetails(i)" *ngIf="!editMode">X</button>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@
             </select>
           </div>
           <div class="col-xs-2">
-            <button type="button" class="btn btn-danger" (click)="removePhoneDetails(i)">X</button>
+            <button type="button" class="btn btn-danger" (click)="removePhoneDetails(i)" *ngIf="!editMode">X</button>
           </div>
         </div>
         </div>
@@ -211,7 +211,7 @@
             />
           </div>
           <div class="col-xs-2">
-            <button type="button" class="btn btn-danger" (click)="removeAddressDetails(i)">X</button>
+            <button type="button" class="btn btn-danger" (click)="removeAddressDetails(i)" *ngIf="!editMode">X</button>
           </div>
         </div>
         </div>
@@ -358,7 +358,7 @@
               </div>
               <div class="col-md-12 col-lg-7">
                 <div>
-                  <label for="email">Email Id :</label>
+                  <label for="email">Email id :</label>
                   <input
                     type="text"
                     formControlName="email"

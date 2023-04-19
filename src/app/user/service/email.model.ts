@@ -1,7 +1,7 @@
 
 export class Email{
 
-  emaiId:number;
+  emailId:number;
   email:string;
   type:string;
 }

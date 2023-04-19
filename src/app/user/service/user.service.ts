@@ -14,7 +14,7 @@ export class UserService{
   searchInstance:string;
   isSearch:boolean;
   editMode:boolean;
-  directoryId:number;
+  directoryid:number;
 
   //methods to set and get search instance and bool
   setSearchInstance(data:string){
@@ -35,11 +35,11 @@ export class UserService{
   getEditMode(){
     return this.editMode;
   }
-  getDirectoryId(){
-    return this.directoryId;
+  getDirectoryid(){
+    return this.directoryid;
   }
-  setDirectoryId(id:number){
-    this.directoryId=id;
+  setDirectoryid(id:number){
+    this.directoryid=id;
   }
 
   private baseUrl='http://localhost:8080/directory/all';
@@ -54,28 +54,28 @@ export class UserService{
   }
 
   // to find one directory using id
-  public getDirectory(directoryId:number) {
-    return this.http.get<User>(`${this.baseUrl}/${directoryId}`);
+  public getDirectory(directoryid:number) {
+    return this.http.get<any>(`${this.baseUrl}/${directoryid}`);
   }
 
-  // to find emails using directoryId
-  public getEmails(directoryId:number){
-    return this.http.get<Email[]>(`${this.emailUrl}/user/${directoryId}`);
+  // to find emails using directoryid
+  public getEmails(directoryid:number){
+    return this.http.get<Email[]>(`${this.emailUrl}/user/${directoryid}`);
   }
 
-  //to find addresses using directoryId
-  public getAddresses(directoryId:number){
-    return this.http.get<Address[]>(`${this.addUrl}/user/${directoryId}`);
+  //to find addresses using directoryid
+  public getAddresses(directoryid:number){
+    return this.http.get<Address[]>(`${this.addUrl}/user/${directoryid}`);
   }
 
-  //to find contacts using directoryId
-  public getContacts(directoryId:number){
-    return this.http.get<Contact[]>(`${this.contactUrl}/user/${directoryId}`);
+  //to find contacts using directoryid
+  public getContacts(directoryid:number){
+    return this.http.get<Contact[]>(`${this.contactUrl}/user/${directoryid}`);
   }
 
   //to delete directory of person
-  public deleteDirectory(directoryId:number){
-        return this.http.delete(`${this.baseUrl}/${directoryId}`)
+  public deleteDirectory(directoryid:number){
+        return this.http.delete(`${this.baseUrl}/${directoryid}`)
 
   }
 
@@ -85,8 +85,8 @@ export class UserService{
   }
 
   //to update directory
-  public updateDirectory(postData:Object,directoryId:number){
-    return this.http.put<User>(`${this.baseUrl}/put/${directoryId}`,postData);
+  public updateDirectory(postData:Object,directoryid:number){
+    return this.http.put<User>(`${this.baseUrl}/put/${directoryid}`,postData);
   }
 
   //search

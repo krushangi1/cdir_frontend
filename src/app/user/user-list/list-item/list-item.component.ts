@@ -17,6 +17,8 @@ export class ListItemComponent implements OnInit{
 
 
   onEdit(){
+    console.log(this.user);
+
     this.router.navigate([this.route,'edit',this.user.directoryId],{relativeTo:this.route})
   }
 
